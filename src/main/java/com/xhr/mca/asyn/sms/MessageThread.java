@@ -1,7 +1,7 @@
 package com.xhr.mca.asyn.sms;
 
+import com.xhr.mca.config.HttpSender;
 import com.xhr.mca.entity.constant.SmsTemplate;
-import com.xhr.mca.http.HttpSender;
 
 import lombok.extern.log4j.Log4j;
 

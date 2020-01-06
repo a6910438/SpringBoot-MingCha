@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import com.xhr.mca.entity.Coin;
 import com.xhr.mca.entity.UserAssest;
 import com.xhr.mca.entity.constant.ExceptionConstants;
 import com.xhr.mca.entity.constant.Type;
+import com.xhr.mca.entity.vo.TransactionDetail;
 import com.xhr.mca.entity.vo.TransactionVo;
 import com.xhr.mca.entity.vo.UserAssestVo;
 import com.xhr.mca.mapper.CoinMapper;
@@ -47,6 +49,7 @@ public class UserAssestServiceImpl implements UserAssestService {
 			Coin coin = coinMapper.selectByPrimaryKey(ua.getCoinId());
 			if (Utility.isNotNull(coin)) {
 				ua.setIconUrl(coin.getIconUrl());
+				ua.setFee(coin.getFee());
 			}
 		}
 		vo.setVos(list);
@@ -93,12 +96,41 @@ public class UserAssestServiceImpl implements UserAssestService {
 			vos = userAssestMapper.findSunTransactionVos(userID, coinID, direction, (page - 1) * rows, rows);
 		} else if (Constants.RMB.equals(coin.getName())) {
 			vos = userAssestMapper.findRmbTransactionVos(userID, coinID, direction, (page - 1) * rows, rows);
+		} else if (Constants.OLD.equals(coin.getName())) {
+			vos = userAssestMapper.findOldTransactionVos(userID, coinID, direction, (page - 1) * rows, rows);
 		}
+		List<TransactionVo> result = new ArrayList<TransactionVo>();
 		for (TransactionVo vo : vos) {
 			vo.setType(Type.values()[vo.getTypeI()].getName());
 			vo.setAmount(Utility.isZero(vo.getAmount()));
+			if (StringUtils.isBlank(vo.getDirection())) {
+				if (userID == vo.getReceice()) {
+					vo.setDirection("+");
+				} else {
+					vo.setDirection("-");
+				}
+
+				if ((("+".equals(vo.getDirection()) && !vo.getDirection().equals(direction))
+						|| ("-".equals(vo.getDirection()) && !vo.getDirection().equals(direction))) && !"%%".equals(direction)) {
+					continue;
+				}
+			}
+			result.add(vo);
 		}
 
-		return vos;
+		return result;
+	}
+
+	@Override
+	public TransactionDetail findTransactionDetailById(Long id, Integer type) throws WebAppException {
+		TransactionDetail detail = null;
+		if (Type.WITHDRAW.getId() == type) {
+			detail = userAssestMapper.findWithdrawDetail(id);
+		} else if (Type.DEPOSIT.getId() == type) {
+			detail = userAssestMapper.findDepositDetail(id);
+		} else {
+			throw new WebAppException(ExceptionConstants.TRANSACTION_DETAIL_NOT_FOUND);
+		}
+		return detail;
 	}
 }

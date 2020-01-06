@@ -146,6 +146,10 @@ public class User {
 	private String base64FileString;
 	@Transient
 	private Integer is_pass;
+	@Transient
+	private String inviteName;
+	@Transient
+	private String invitePhone;
 
 	public User() {
 		// TODO Auto-generated constructor stub

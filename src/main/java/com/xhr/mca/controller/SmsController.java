@@ -71,4 +71,16 @@ public class SmsController {
 		}
 		return ResultUtil.success();
 	}
+
+	@RequestMapping(value = "/send_withdraw_code", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public Result sendWithdrawCode(@RequestParam(value = "areaCode") String area,
+			@RequestParam(value = "phone") String phone) {
+		try {
+			smsService.sendWithdrawCode(area, phone);
+		} catch (Exception e) {
+			log.error("SmsController sendRegisterCode 发生异常:", e);
+			return ResultUtil.fail();
+		}
+		return ResultUtil.success();
+	}
 }

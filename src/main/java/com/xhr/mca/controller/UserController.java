@@ -17,6 +17,7 @@ import com.xhr.mca.common.ResultUtil;
 import com.xhr.mca.common.WebAppException;
 import com.xhr.mca.entity.User;
 import com.xhr.mca.entity.constant.ExceptionConstants;
+import com.xhr.mca.entity.constant.Level;
 import com.xhr.mca.redis.UserManagent;
 import com.xhr.mca.service.UserAuthService;
 import com.xhr.mca.service.UserService;
@@ -189,6 +190,7 @@ public class UserController {
 			u.setIs_pass(userAuthService.getStatusByUserId(u.getId()).ordinal());
 			u.setPassword1("");
 			u.setPassword2("");
+			u.setLevelString(User.levelString(Level.values()[u.getLevel()]));
 			return ResultUtil.success(u);
 		} catch (WebAppException e) {
 			log.error("UserController info 发生异常:", e);

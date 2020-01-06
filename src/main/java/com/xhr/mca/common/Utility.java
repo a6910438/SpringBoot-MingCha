@@ -560,7 +560,8 @@ public class Utility {
 		if (number == null) {
 			return BigDecimal.ZERO;
 		}
-		if (number.compareTo(new BigDecimal(0E-16)) == 0 || number.compareTo(new BigDecimal(0E-8)) == 0) {
+		if (number.compareTo(new BigDecimal(0E-16)) == 0 || number.compareTo(new BigDecimal(0E-8)) == 0
+				|| number.compareTo(new BigDecimal(5.0E-4)) == 0) {
 			return BigDecimal.ZERO;
 		}
 		return number;
@@ -761,5 +762,10 @@ public class Utility {
 			ip = ipArray[0];
 		}
 		return ip;
+	}
+
+	public static int getRandomInt(int min, int max) {
+		Random random = new Random();
+		return random.nextInt(max) % (max - min + 1) + min;
 	}
 }

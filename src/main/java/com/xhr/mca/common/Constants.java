@@ -29,6 +29,7 @@ public class Constants {
 	public static final String FORGOT_SUFFIX = "forgot_1";
 	public static final String UPTPASS_SUFFIX = "uptpass_1";
 	public static final String PAYPASS_SUFFIX = "paypass_1";
+	public static final String WITHDRAW_SUFFIX = "withdraw_1";
 
 	// 存放头像路径
 	public static final String USER_IMAGE_PATH = "user/images/";

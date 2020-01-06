@@ -38,6 +38,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<Product> selectAll(Product product) throws WebAppException {
+		product.setIsDelete(Status.NO.ordinal());
 		List<Product> ps = productMapper.select(product);
 		for (Product p : ps) {
 			p.setCoinString(coinMapper.selectByPrimaryKey(p.getCoinId()).getName());
@@ -70,6 +71,11 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Product findProductBySn(String sn) throws WebAppException {
 		return productMapper.selectOne(new Product(sn));
+	}
+
+	@Override
+	public void update(Product p) throws WebAppException {
+		productMapper.updateByPrimaryKeySelective(p);
 	}
 
 }

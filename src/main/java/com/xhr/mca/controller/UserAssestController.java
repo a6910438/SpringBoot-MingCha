@@ -56,4 +56,15 @@ public class UserAssestController {
 		}
 	}
 
+	@RequestMapping(value = "/detail/data", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public Result detailData(@RequestParam(value = "detail_id") Long detailId,
+			@RequestParam(value = "type") Integer type) {
+		try {
+			return ResultUtil.success(userAssestService.findTransactionDetailById(detailId, type));
+		} catch (WebAppException e) {
+			log.error("UserAssestController detailData 发生异常:", e);
+			return ResultUtil.fail(e.geteConstants());
+		}
+	}
+
 }

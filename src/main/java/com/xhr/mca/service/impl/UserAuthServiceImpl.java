@@ -10,10 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.xhr.mca.common.Constants;
 import com.xhr.mca.common.Utility;
 import com.xhr.mca.common.WebAppException;
+import com.xhr.mca.config.AliyunOss;
 import com.xhr.mca.entity.UserAuth;
 import com.xhr.mca.entity.constant.AuditStatus;
 import com.xhr.mca.entity.constant.AuthStatus;
-import com.xhr.mca.http.AliyunOss;
+import com.xhr.mca.entity.constant.ExceptionConstants;
 import com.xhr.mca.mapper.UserAuthMapper;
 import com.xhr.mca.service.UserAuthService;
 
@@ -32,6 +33,11 @@ public class UserAuthServiceImpl implements UserAuthService {
 	@Override
 	@Transactional
 	public void insert(UserAuth userAuth) throws WebAppException, IOException {
+		AuthStatus status = getStatusByUserId(userAuth.getUserId());
+		if (status == AuthStatus.UPLOAD) {
+			throw new WebAppException(ExceptionConstants.AUTH_COMMIT);
+		}
+
 		long time = Utility.currentTimestamp();
 		// 上传阿里云 并配置字段URL路径
 		aliyunOss.uploadImageBase64(userAuth.getBackImgFile(), Constants.IDCARD_IMG_PATH + Constants.ONE + "/",
@@ -40,12 +46,12 @@ public class UserAuthServiceImpl implements UserAuthService {
 				String.valueOf(time));
 		aliyunOss.uploadImageBase64(userAuth.getFaceImgFile(), Constants.IDCARD_IMG_PATH + Constants.THREE + "/",
 				String.valueOf(time));
-		userAuth.setBackImgUrl(aliyunOss.getUrl() + "/" + Constants.IDCARD_IMG_PATH + Constants.ONE + "/"
-				+ time + Constants.PNG_SUFFIX);
-		userAuth.setFrontImgUrl(aliyunOss.getUrl() + "/" + Constants.IDCARD_IMG_PATH + Constants.TWO + "/"
-				+ time + Constants.PNG_SUFFIX);
-		userAuth.setFaceImgUrl(aliyunOss.getUrl() + "/" + Constants.IDCARD_IMG_PATH + Constants.THREE + "/"
-				+ time + Constants.PNG_SUFFIX);
+		userAuth.setBackImgUrl(aliyunOss.getUrl() + "/" + Constants.IDCARD_IMG_PATH + Constants.ONE + "/" + time
+				+ Constants.PNG_SUFFIX);
+		userAuth.setFrontImgUrl(aliyunOss.getUrl() + "/" + Constants.IDCARD_IMG_PATH + Constants.TWO + "/" + time
+				+ Constants.PNG_SUFFIX);
+		userAuth.setFaceImgUrl(aliyunOss.getUrl() + "/" + Constants.IDCARD_IMG_PATH + Constants.THREE + "/" + time
+				+ Constants.PNG_SUFFIX);
 		// 创建时间
 		userAuth.setCreateTime(Utility.currentTimestamp());
 		userAuth.setStatus(AuditStatus.Audit.ordinal());

@@ -38,7 +38,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableScheduling
 @EnableAsync
 public class Application {
-
+	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
@@ -61,11 +61,12 @@ public class Application {
 		objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
 		objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
 		objectMapper.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
-            @Override
-            public void serialize(Object o, JsonGenerator jsonGenerator,SerializerProvider serializerProvider)throws IOException, JsonProcessingException {
-                jsonGenerator.writeString("");
-            }
-        });
+			@Override
+			public void serialize(Object o, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+					throws IOException, JsonProcessingException {
+				jsonGenerator.writeString("");
+			}
+		});
 
 		jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
 
@@ -93,5 +94,6 @@ public class Application {
 		HttpMessageConverter<?> converter = fastJsonHttpMessageConverter;
 		return new HttpMessageConverters(converter);
 	}
+
 
 }

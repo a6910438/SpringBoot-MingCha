@@ -50,6 +50,10 @@ public class Coin {
 	/** 币种图标URL **/
 	@Column(name = "icon_url")
 	private String iconUrl;
+	
+	/** 合约地址 **/
+	@Column(name = "contract_address")
+	private String contractAddress;
 
 	/** 描述 **/
 	@Column(name = "remark")

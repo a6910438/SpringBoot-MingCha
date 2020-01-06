@@ -15,7 +15,8 @@ public enum ConfigKeys {
 	PARTNET_DIRECT_PUSH_PROFIT_TYPE("partnet_direct_push_profit_type"),
 	GOLD_DIRECT_PUSH_PROFIT_TYPE("gold_direct_push_profit_type"), TEAM_PROFIT("team_profit"),
 	LEVEL_PROFIT("level_profit"), EVERY_SYSTEM_BONUS_POOL("every_system_bonus_pool"),
-	SYSTEM_BONUS_POOL("system_bonus_pool");
+	SYSTEM_BONUS_POOL("system_bonus_pool"),
+	THAN_WITHDRAW_NUMBER("than_withdraw_number");
 
 	private String key;
 

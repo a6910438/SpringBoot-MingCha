@@ -9,7 +9,7 @@ import lombok.Builder;
 
 @Builder
 public class Payment {
-	
+
 	private String txBizNumber;
 	private String txid;
 	private Credentials credentials;
@@ -18,6 +18,7 @@ public class Payment {
 	private String unit;
 	private BigInteger gasLimit;
 	private BigInteger gasPrice;
+	private String contractAddress;
 
 	public String getTxid() {
 		return txid;
@@ -78,4 +79,13 @@ public class Payment {
 	public String getTxBizNumber() {
 		return txBizNumber;
 	}
+
+	public String getContractAddress() {
+		return contractAddress;
+	}
+
+	public void setContractAddress(String contractAddress) {
+		this.contractAddress = contractAddress;
+	}
+
 }

@@ -17,6 +17,8 @@ import com.xhr.mca.common.Constants;
 import com.xhr.mca.common.MD5;
 import com.xhr.mca.common.Utility;
 import com.xhr.mca.common.WebAppException;
+import com.xhr.mca.config.AliyunOss;
+import com.xhr.mca.config.HttpSender;
 import com.xhr.mca.entity.Config;
 import com.xhr.mca.entity.User;
 import com.xhr.mca.entity.UserInviteCode;
@@ -28,8 +30,6 @@ import com.xhr.mca.entity.constant.Sex;
 import com.xhr.mca.entity.constant.SmsTemplate;
 import com.xhr.mca.entity.constant.Status;
 import com.xhr.mca.entity.vo.Team;
-import com.xhr.mca.http.AliyunOss;
-import com.xhr.mca.http.HttpSender;
 import com.xhr.mca.mapper.AddressMapper;
 import com.xhr.mca.mapper.CoinMapper;
 import com.xhr.mca.mapper.ConfigMapper;
@@ -91,6 +91,15 @@ public class UserServiceImpl implements UserService {
 		String token = MD5.getMD516(u.getId() + "_" + Utility.currentTimestamp());
 		redis.set(token, String.valueOf(u.getId()));
 		u.setToken(token);
+
+		if (u.getPid() != null) {
+			User parent = userMapper.selectByPrimaryKey(u.getPid());
+			if (parent != null) {
+				u.setInviteName(parent.getNickname());
+				u.setInvitePhone(parent.getPhone());
+			}
+		}
+
 		return u;
 	}
 

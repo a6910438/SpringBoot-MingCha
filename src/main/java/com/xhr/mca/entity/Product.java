@@ -99,6 +99,9 @@ public class Product {
 	/** 以逗号分割的产品服务：如 : 1->无忧退货；2->快速退款；3->免费包邮 **/
 	@Column(name = "service_ids")
 	private String serviceIds;
+	/** 是否删除(0.否 1.是) **/
+	@Column(name = "is_delete")
+	private Integer isDelete;
 	
 	@Transient
 	private String coinString;

@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -36,7 +37,10 @@ public class Config {
 	/** 创建时间 **/
 	@Column(name = "create_time")
 	private Long createTime;
-	
+	/** 安卓下载地址 **/
+	@Transient
+	private String androidDownUrl;
+
 	public Config() {
 		// TODO Auto-generated constructor stub
 	}

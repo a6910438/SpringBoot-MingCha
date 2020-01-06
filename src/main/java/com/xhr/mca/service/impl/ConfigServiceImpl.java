@@ -56,7 +56,10 @@ public class ConfigServiceImpl implements ConfigService {
 
 	@Override
 	public Config findConfigByKey(String key) throws WebAppException {
-		return configMapper.selectOne(new Config(key));
+		Config c = configMapper.selectOne(new Config(key));
+		Config down = configMapper.selectOne(new Config(ConfigKeys.ANDROID_DOWNLOAD_URL.getKey()));
+		c.setAndroidDownUrl(down.getValue());
+		return c;
 	}
 
 	@Override

@@ -7,7 +7,8 @@ public enum SmsTemplate {
 	UPDATE_CAPTCHA_CODE(2, "【MCA零售】您正在进行修改密码操作，验证码是：%s,该验证码%d分钟有效，如不是本人操作，请勿向他人透漏"),
 	UPDATE_PAY_CAPTCHA_CODE(3, "【MCA零售】您正在进行修改支付密码操作，验证码是：%s,该验证码%d分钟有效，如不是本人操作，请勿向他人透漏"),
 	CONGRATULATIONS_REGISTER(4, "【MCA零售】恭喜您，已成功注册为MCA零售用户"), LOGIN_PASSWORD_UPDATE_SUCCESS(5, "【MCA零售】登录密码修改成功"),
-	PAY_PASSWORD_UPDATE_SUCCESS(6, "【MCA零售】交易密码修改成功");
+	PAY_PASSWORD_UPDATE_SUCCESS(6, "【MCA零售】交易密码修改成功"),
+	SEND_WITHDRAW_CAPTCHA_CODE(7, "【MCA零售】您正在进行提币操作，验证码是：%s,该验证码%d分钟有效，如不是本人操作，请勿向他人透漏");
 
 	private Integer type;
 	private String message;

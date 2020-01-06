@@ -16,4 +16,6 @@ public interface ProductService {
 	
 	public ProductVo selectProductDetail(String sn) throws WebAppException;
 	
+	public void update(Product p) throws WebAppException;
+	
 }

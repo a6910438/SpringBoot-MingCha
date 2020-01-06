@@ -67,6 +67,8 @@ public class UserAssest {
 	private BigDecimal rate;
 	@Transient
 	private String iconUrl;
+	@Transient
+	private Double fee;
 
 	public UserAssest() {
 
@@ -81,7 +83,7 @@ public class UserAssest {
 		this.coinId = coinID;
 	}
 
-	public UserAssest(Long id,Long userID, Long coinID, BigDecimal number) {
+	public UserAssest(Long id, Long userID, Long coinID, BigDecimal number) {
 		this.id = id;
 		this.userId = userID;
 		this.coinId = coinID;

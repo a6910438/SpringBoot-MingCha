@@ -126,6 +126,8 @@ public class Order {
 	private Float freight;
 	@Transient
 	private String coinString;
+	@Transient
+	private String coinImgUrl;
 
 	public Order() {
 

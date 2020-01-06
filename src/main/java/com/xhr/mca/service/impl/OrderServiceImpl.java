@@ -130,6 +130,12 @@ public class OrderServiceImpl implements OrderService {
 		for (Order o : orders) {
 			Product p = productService.findProductBySn(o.getProductSn());
 			if (Utility.isNotNull(p)) {
+
+				Coin coin = coinService.getCoinById(p.getCoinId());
+				if (Utility.isNotNull(coin)) {
+					o.setCoinString(coin.getName());
+				}
+
 				o.setPic(p.getImgUrl());
 				o.setProductName(p.getProductName());
 				o.setProductDesc(p.getDescription());
@@ -194,7 +200,9 @@ public class OrderServiceImpl implements OrderService {
 			order.setPayAmount(
 					order.getAmount().multiply(new BigDecimal(order.getNumber())).add(Utility.isZero(freight)));
 		}
-		order.setCoinString(coinService.getCoinById(p.getCoinId()).getName());
+		Coin coin = coinService.getCoinById(p.getCoinId());
+		order.setCoinString(coin.getName());
+		order.setCoinImgUrl(coin.getIconUrl());
 
 		orderMapper.insert(order);
 		return order;
@@ -238,6 +246,7 @@ public class OrderServiceImpl implements OrderService {
 		o.setOrderStatus(OrderStatus.PENDING_SEND.ordinal());
 		update(o);
 
+		o.setCoinString(coin.getName());
 		Product p = productService.findProductBySn(o.getProductSn());
 		SunRecord record = new SunRecord();
 		record.setOld(old);
@@ -250,6 +259,9 @@ public class OrderServiceImpl implements OrderService {
 		record.setCreateTime(Utility.currentTimestamp());
 		spuRecordService.insert(record);
 
+		// 修改销量
+		p.setSale(p.getSale() + o.getNumber());
+		productService.update(p);
 		// 用户升级 黄金创客 合伙人 线程
 		new OrderThread(userService, this, o.getUserId(), configService).start();
 
@@ -285,6 +297,7 @@ public class OrderServiceImpl implements OrderService {
 		o.setIsDelete(Status.NO.ordinal());
 		orderMapper.updateByPrimaryKeySelective(o);
 
+		sendFreeMca(o);
 		o.setPid(pid);
 		// 直推收益
 		directPushProfit(o);
@@ -294,6 +307,27 @@ public class OrderServiceImpl implements OrderService {
 		levelProfit(o);
 		// 放入分红池
 		putPool(o);
+	}
+
+	public void sendFreeMca(Order o) {
+		Coin coin = coinService.getCoinByName(Constants.MCA);
+		UserAssest ua = userAssestService.findAssestByUserIdAndCoinId(o.getUserId(), coin.getId());
+		BigDecimal amount = BigDecimal.ZERO;
+		if (o.getPayAmount().compareTo(new BigDecimal(360)) >= 0
+				&& o.getPayAmount().compareTo(new BigDecimal(20000)) <= 0) {
+			amount = amount.add(ua.getAvaBalance()).add(new BigDecimal(360));
+			McaRecord record = new McaRecord(null, null, Type.PAY_ORDER_SEND.getId(), ua.getAvaBalance(), amount,
+					new BigDecimal(360), o.getUserId(), Utility.currentTimestamp(), Type.PAY_ORDER_SEND.getDirection());
+			mcaRecordService.insert(record);
+		} else if (o.getPayAmount().compareTo(new BigDecimal(20000)) >= 0) {
+			amount = amount.add(ua.getAvaBalance()).add(new BigDecimal(60000));
+			McaRecord record = new McaRecord(null, null, Type.PAY_ORDER_SEND.getId(), ua.getAvaBalance(), amount,
+					new BigDecimal(60000), o.getUserId(), Utility.currentTimestamp(),
+					Type.PAY_ORDER_SEND.getDirection());
+			mcaRecordService.insert(record);
+		}
+		ua.setAvaBalance(amount);
+		userAssestService.updateAssest(ua);
 	}
 
 	/**
@@ -497,6 +531,12 @@ public class OrderServiceImpl implements OrderService {
 		}
 		Product p = productService.findProductBySn(o.getProductSn());
 		if (Utility.isNotNull(p)) {
+
+			Coin coin = coinService.getCoinById(p.getCoinId());
+			if (Utility.isNotNull(coin)) {
+				o.setCoinString(coin.getName());
+			}
+
 			o.setPic(p.getImgUrl());
 			o.setProductName(p.getProductName());
 			o.setProductDesc(p.getDescription());
@@ -530,6 +570,15 @@ public class OrderServiceImpl implements OrderService {
 		o.setPaymentTime(Utility.currentTimestamp());
 		orderMapper.updateByPrimaryKeySelective(o);
 
+		Product p = productService.findProductBySn(o.getProductSn());
+		if (Utility.isNotNull(p)) {
+			// 修改销量
+			p.setSale(p.getSale() + o.getNumber());
+			productService.update(p);
+		}
+
+		// 用户升级 黄金创客 合伙人 线程
+		new OrderThread(userService, this, o.getUserId(), configService).start();
 	}
 
 	@Override

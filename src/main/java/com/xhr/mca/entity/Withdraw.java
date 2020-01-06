@@ -28,6 +28,10 @@ public class Withdraw {
 	@Column(name = "user_id")
 	private Long userId;
 
+	/** 币种ID **/
+	@Column(name = "coin_id")
+	private Long coinId;
+
 	/** 钱包地址 **/
 	@Column(name = "wallet_address")
 	private String walletAddress;
@@ -55,4 +59,23 @@ public class Withdraw {
 	/** 完成时间 **/
 	@Column(name = "done_time")
 	private Long doneTime;
+
+	public Withdraw() {
+	}
+
+	public Withdraw(Long id, Long userId, String walletAddress, String hash, BigDecimal amount, BigDecimal commission,
+			Integer status, Long createTime, Long doneTime, Long coinId) {
+		super();
+		this.id = id;
+		this.userId = userId;
+		this.walletAddress = walletAddress;
+		this.hash = hash;
+		this.amount = amount;
+		this.commission = commission;
+		this.status = status;
+		this.createTime = createTime;
+		this.doneTime = doneTime;
+		this.coinId = coinId;
+	}
+
 }

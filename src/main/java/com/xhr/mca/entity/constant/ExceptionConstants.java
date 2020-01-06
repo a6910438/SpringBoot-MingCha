@@ -6,12 +6,10 @@ public enum ExceptionConstants {
 	SERVER_EXPECTION(0, "服务器异常"), TOKEN_NOT_IS_EXITS(0, "Token 不存在,请重新登录!"), INSUFFICIENT_FUNDS(0, "余额不足,请充值后再购买"),
 	VER_CODE_ERROR(0, "验证码错误!"), USER_IS_EXIST(0, "账号已存在,请直接登录!"), INVITE_PERSON_NOTEXIST(0, "推荐人不存在!"),
 	USER_NOT_EXIST(0, "账号不存在!"), USER_LOGIN_FAILD(0, "登录失败,请检查账号和密码是否正确!"), PRODUCT_NOT_FOUND(0, "商品下架,请刷新!"),
-	ORDER_NOT_FOUND(0, "订单已失效,请联系客服人员!"),
-	COIN_NOT_FOUND(0, "币种不存在!"),
-	PAY_PASSWORD_FAILD(0, "密码错误!"),
-	CREATE_UNIFIED_ORDER(0, "生成预支付订单异常!"),
-	PASS_AUTH_ORDER(0, "请先实名认证之后再提交订单!"),
-	STOCK_INSUFFICIENT(0, "库存不足,请联系管理人员赶快加货!");
+	ORDER_NOT_FOUND(0, "订单已失效,请联系客服人员!"), COIN_NOT_FOUND(0, "币种不存在!"), PAY_PASSWORD_FAILD(0, "密码错误!"),
+	CREATE_UNIFIED_ORDER(0, "生成预支付订单异常!"), PASS_AUTH_ORDER(0, "请先实名认证之后再提交订单!"),
+	STOCK_INSUFFICIENT(0, "库存不足,请联系管理人员赶快加货!"), INSUFFICIENT_BALANCE(0, "余额不足!"),
+	APPLY_WITHDRAW_SUCCESS(1, "申请提币成功,请等待后台审核!"), AUTH_COMMIT(1, "实名认证已经提交,请勿重复操作!"), PAY_PASSWORD_ERROR(0, "支付密码错误,请检查后再输入!"), TRANSACTION_DETAIL_NOT_FOUND(0, "交易明细不存在!");
 
 	private Integer errorCode;
 	private String errorMessage;

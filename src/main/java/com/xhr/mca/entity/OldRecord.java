@@ -11,14 +11,14 @@ import javax.persistence.Table;
 import lombok.Data;
 
 /**
- * SUN流水表
+ * MCA流水表
  * 
  * @author xhr
  *
  */
 @Data
-@Table(name = "sun_record")
-public class SunRecord {
+@Table(name = "old_record")
+public class OldRecord {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,12 +55,12 @@ public class SunRecord {
 	/** 交易方向(加或者减) **/
 	@Column(name = "direction")
 	private String direction;
-	
-	public SunRecord(){
-		
-	}
 
-	public SunRecord(Long id, Long send, Integer type, BigDecimal old, BigDecimal now, BigDecimal amount, Long receice,
+	public OldRecord() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public OldRecord(Long id, Long send, Integer type, BigDecimal old, BigDecimal now, BigDecimal amount, Long receice,
 			Long createTime, String direction) {
 		super();
 		this.id = id;
@@ -73,5 +73,7 @@ public class SunRecord {
 		this.createTime = createTime;
 		this.direction = direction;
 	}
+	
+	
 
 }
